@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class ЖивийОрганізм
+{
+    public double Енергія { get; set; }
+    public int Вік { get; set; }
+    public double Розмір { get; set; }
+
+    public virtual void Рухатися()
+    {
+        Console.WriteLine("Організм рухається.");
+    }
+}
+
+public class Тварина : ЖивийОрганізм, IReproducible, IPredator
+{
+    public string Тип { get; set; }
+
+    public void Розмноження()
+    {
+        Console.WriteLine("Тварина розмножується.");
+    }
+
+    public void Полювання()
+    {
+        Console.WriteLine("Тварина полює.");
+    }
+}
+
+public class Рослина : ЖивийОрганізм, IReproducible
+{
+    public string Вид { get; set; }
+
+    public void Розмноження()
+    {
+        Console.WriteLine("Рослина розмножується.");
+    }
+}
+
+public class Мікроорганізм : ЖивийОрганізм, IReproducible
+{
+    public string Вид { get; set; }
+
+    public void Розмноження()
+    {
+        Console.WriteLine("Мікроорганізм розмножується.");
+    }
+}
+
+public interface IReproducible
+{
+    void Розмноження();
+}
+
+public interface IPredator
+{
+    void Полювання();
+}
+
+public class Екосистема
+{
+    private List<ЖивийОрганізм> організми;
+
+    public Екосистема(List<ЖивийОрганізм> організми)
+    {
+        this.організми = організми;
+    }
+
+    public void СимулюватиВзаємодію()
+    {
+        foreach (var організм in організми)
+        {
+            організм.Рухатися();
+
+            if (організм is IReproducible репродуктор)
+            {
+                репродуктор.Розмноження();
+            }
+
+            if (організм is IPredator хижак)
+            {
+                хижак.Полювання();
+            }
+        }
+    }
+}
